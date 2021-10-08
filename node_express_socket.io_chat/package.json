@@ -1,0 +1,24 @@
+{
+  "name": "node_express_socket.io_chat",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "test": "jasmine"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "mysql2": "^2.3.0",
+    "sequelize": "^6.6.5",
+    "socket.io": "^4.2.0"
+  },
+  "devDependencies": {
+    "jasmine": "^3.9.0",
+    "request": "^2.88.2"
+  }
+}

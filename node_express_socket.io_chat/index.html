@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>online chat</title>
+    <!-- jQuery and JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/node_modules/socket.io/client-dist/socket.io.min.js"></script>
+</head>
+<body>
+    <div class=container>
+        <br />
+        <div class="jumbotron">
+            <h1 class="display-4">send message</h1>
+            <br />
+            <input type="text" id="name" class="form-control" placeholder="name">
+            <br />
+            <textarea type="text" id="message" class="form-control" placeholder="message"></textarea>
+            <br>
+            <button class="btn btn-success" id="send">send</button>
+        </div>
+        <div id="messages-display"></div>
+    </div>
+    <script>
+        const socket = io.connect('http://localhost:4000/');
+
+        $(() => {
+            function addMessage({userName, message}) {
+                const dom = `<h4>${userName}</h4><p>${message}</p>`
+                $('#messages-display').append(dom)
+            }
+
+            function getMessage() {
+                $.get('http://localhost:4000/messages', (data) => {
+                    console.log('data=', data)
+                    data.forEach(addMessage)
+                })
+            }
+
+            function postMessage(message) {
+                $.ajax({
+                    url: 'http://localhost:4000/messages',
+                    type: 'POST',
+                    data: JSON.stringify(message),
+                    contentType: 'application/json; charset=utf-8'
+                })
+            }
+
+            socket.on('message', addMessage)
+
+            $('#send').click(() => {
+                postMessage({
+                    userName: $('#name').val(),
+                    message: $('#message').val()
+                })
+            })
+            getMessage()
+        })
+    </script>
+</body>
+</html>
